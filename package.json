@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@grammyjs/conversations": "^2.0.1",
+    "date-fns": "^4.1.0",
+    "fs": "^0.0.1-security",
+    "grammy": "^1.35.0",
+    "mande": "^2.0.9",
+    "node": "^18.20.7"
+  }
+}
