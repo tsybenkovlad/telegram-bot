@@ -4,9 +4,11 @@ import {scheduleMessage} from "./scheduler.js";
 import {Bot} from "grammy";
 import {conversations, createConversation} from "@grammyjs/conversations"
 
+const TOKEN = process.env.TELEGRAM_TOKEN;
+
 const timerMap = {};
 
-const bot = new Bot("7926259652:AAGmeyWdLp-bz9z5ageK6lWYPGbmarj6E8Q");
+const bot = new Bot(TOKEN);
 bot.use(conversations());
 bot.api.setMyCommands([
     {
