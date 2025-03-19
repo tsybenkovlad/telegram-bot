@@ -1,6 +1,6 @@
 import {getCurrencyMessage} from "./currency.js";
 import {addUser, timeOut, loadUsers} from "./users.js";
-import {scheduleMessage} from "./scheduler.js";
+import {scheduleMessage, disableSchedule} from "./scheduler.js";
 import {Bot} from "grammy";
 import {conversations, createConversation} from "@grammyjs/conversations"
 
@@ -22,10 +22,14 @@ bot.api.setMyCommands([
     {
         command: "rate",
         description: "Показати поточний курс"
+    },
+    {
+        command: "off",
+        description: "Відмінити автомаичне надсилання повідомлень з курсом"
     }
 ])
 
-async function hello(conversation, ctx) {
+async function timeConversation(conversation, ctx) {
     await ctx.reply("Введіть час у форматі HH:MM (наприклад, 13:00), коли ви хочете отримувати повідомлення");
     const {message} = await conversation.waitFor("message:text");
     const response = await conversation.external(() => {
@@ -42,7 +46,7 @@ async function hello(conversation, ctx) {
     await ctx.reply(response);
 }
 
-bot.use(createConversation(hello));
+bot.use(createConversation(timeConversation));
 
 bot.command("start", (ctx) => {
     ctx.reply("Ласкаво просимо! Використовуйте команди для керування ботом")
@@ -53,10 +57,16 @@ bot.command("start", (ctx) => {
     console.log(id)
 });
 bot.command("time", async (ctx) => {
-    await ctx.conversation.enter("hello");
+    await ctx.conversation.enter("timeConversation");
 })
 bot.command("rate", async (ctx) => {
     await ctx.reply(await getCurrencyMessage());
+})
+bot.command("off",  async (ctx) => {
+    let id = ctx.chatId
+    disableSchedule(timerMap, ctx.chatId, bot)
+    timeOut(id, "")
+    await ctx.reply("Відправка сповіщень вимкнена, щоб увімкнути сповіщення про курс, використайте команду /time")
 })
 bot.on("message", async (ctx) => {
     await ctx.reply("Використовуйте команди для роботи з чатом!")
@@ -66,5 +76,7 @@ bot.start();
 // ----------------
 let userArr = loadUsers()
 for (let i = 0; i < userArr.length; i++) {
-    scheduleMessage(timerMap, userArr[i].time, userArr[i].chatId, bot)
+    if (userArr[i].time){
+        scheduleMessage(timerMap, userArr[i].time, userArr[i].chatId, bot)
+    }
 }

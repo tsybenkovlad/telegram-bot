@@ -32,7 +32,7 @@ function addUser(user, chatId) {
 
 function timeOut(chatId, time) {
     try {
-        if (isNaN(getDelay(time))) {
+        if (time !== "" && isNaN(getDelay(time))) {
             throw new Error()
         }
     } catch (error) {

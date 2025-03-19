@@ -13,5 +13,12 @@ function scheduleMessage(timerMap, time, chatId, bot) {
     }, delay)
     console.log({time, chatId})
 }
+function disableSchedule(timerMap, chatId, bot) {
+    let oldTimerId = timerMap[chatId]
+    if (oldTimerId !== undefined) {
+        clearTimeout(oldTimerId)
+    }
+    delete timerMap[chatId]
+}
 
-export {scheduleMessage}
+export {scheduleMessage, disableSchedule}
