@@ -10,6 +10,7 @@ function scheduleMessage(timerMap, time, chatId, bot) {
     timerMap[chatId] = setTimeout(async () => {
         console.log(chatId, time, "messages")
         await bot.api.sendMessage(chatId, await getCurrencyMessage())
+        scheduleMessage(timerMap, time, chatId, bot)
     }, delay)
     console.log({time, chatId})
 }

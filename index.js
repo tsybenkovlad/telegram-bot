@@ -62,7 +62,7 @@ bot.command("time", async (ctx) => {
 bot.command("rate", async (ctx) => {
     await ctx.reply(await getCurrencyMessage());
 })
-bot.command("off",  async (ctx) => {
+bot.command("off", async (ctx) => {
     let id = ctx.chatId
     disableSchedule(timerMap, ctx.chatId, bot)
     timeOut(id, "")
@@ -76,7 +76,7 @@ bot.start();
 // ----------------
 let userArr = loadUsers()
 for (let i = 0; i < userArr.length; i++) {
-    if (userArr[i].time){
+    if (userArr[i].time) {
         scheduleMessage(timerMap, userArr[i].time, userArr[i].chatId, bot)
     }
 }
